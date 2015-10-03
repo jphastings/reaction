@@ -7,7 +7,7 @@ class WelcomeHeader extends React.Component {
   }
 
   render() {
-    const name = this.state.preferredName || 'Anonymous';
+    const name = this.state.name || 'Anonymous';
     return (
       <h1>Hello {name}</h1>
     );
