@@ -20979,7 +20979,7 @@ var ComponentRenderer =
 	  _createClass(WelcomeHeader, [{
 	    key: 'render',
 	    value: function render() {
-	      var name = this.state.preferredName || 'Anonymous';
+	      var name = this.state.name || 'Anonymous';
 	      return _react2['default'].createElement(
 	        'h1',
 	        null,
