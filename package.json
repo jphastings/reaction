@@ -4,14 +4,23 @@
   "description": "React powered component renderer",
   "main": "rts.js",
   "dependencies": {
-    "body-parser": "^1.14.1",
-    "express": "^4.13.3",
     "react": "^0.13.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-core": "^5.8.25",
+    "babel-loader": "^5.3.2",
+    "babelify": "^6.3.0",
+    "browserify": "^11.2.0",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.1",
+    "gulp-uglify": "^1.4.1",
+    "require-all": "^1.1.0",
+    "source-map-support": "^0.3.2",
+    "webpack": "^1.12.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "node rts.js"
+    "serve": "node server.js"
   },
   "author": "",
   "license": "MIT"
