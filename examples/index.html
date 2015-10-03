@@ -1,10 +1,23 @@
 <html>
 <head>
 <script type="text/javascript" src="js/ComponentRenderer.js"></script>
-Open up your Chrome console and try out the renderer in the browser with:
-
-<code><pre>
-ComponentRenderer.render('CommentBox', {});
-</pre></code>
 </head>
+<body>
+<p>I've rendered the <code>HomePage</code> component into the <code>#container</code> element below (in JavaScript).</p>
+<p>You can play around with that like this:</p>
+<code id="example"><pre>
+ComponentRenderer.renderInto(
+  document.getElementById('container'),
+  'HomePage',
+  { preferredName: 'JP' }
+);
+</pre></code>
+
+<hr />
+
+<div id="container"></div>
+<script>
+  eval(document.getElementById('example').innerText); // lol
+</script>
+</body>
 </html>

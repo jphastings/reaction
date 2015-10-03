@@ -6,7 +6,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <div>
-        <WelcomeHeader />
+        <WelcomeHeader preferredName={this.props.preferredName} />
         <CommentBox />
       </div>
     );

@@ -8,7 +8,7 @@ A proof-of-concept React component rendering service.
 2. Create the compiled `ComponentRenderer.js` by running `webpack`
 3. In `examples` You can now:
   - execute `bundle exec ruby example.rb` and see a CommentBox being rendered with V8 from ruby
-  - serve the directy (`ruby -run -ehttpd . -p8000` will do you) and use the Chrome console to run `ComponentRenderer.render('CommentBox', {})`
+  - serve the directy (`ruby -run -ehttpd . -p8000` will do you) and see the DOM renderer take place.
 
 ## Things I'd like to do
 
