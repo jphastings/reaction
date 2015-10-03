@@ -2,14 +2,14 @@
 
 A proof-of-concept React component rendering service.
 
-## Use
+## Usage
 
-1. `npm install`
-2. Make sure all of your components are listed in `rts.js`
-3. Run `node run serve`
+1. `npm install && npm install webpack -g` (the latter is needed for the cli tool for webpack, I'll write a gulp script to do this in the future)
+2. Create the compiled `ComponentRenderer.js` by running `webpack`
+3. In `examples` You can now:
+  - execute `bundle exec ruby example.rb` and see a CommentBox being rendered with V8 from ruby
+  - serve the directy (`ruby -run -ehttpd . -p8000` will do you) and use the Chrome console to run `ComponentRenderer.render('CommentBox', {})`
 
 ## Things I'd like to do
 
-- Write the components in JSX
-- Use ES6 everywhere
 - Use React-DOM to allow clientside rendering of the components
