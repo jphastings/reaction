@@ -1,9 +1,15 @@
 import React from 'react';
 
 class WelcomeHeader extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { name: this.props.preferredName };
+  }
+
   render() {
+    const name = this.state.preferredName || 'Anonymous';
     return (
-      <h1>Hello {this.props.preferredName}</h1>
+      <h1>Hello {name}</h1>
     );
   }
 }

@@ -12,4 +12,4 @@ A proof-of-concept React component rendering service.
 
 ## Things I'd like to do
 
-- Use React-DOM to allow clientside rendering of the components
+- Get client-side state change working.

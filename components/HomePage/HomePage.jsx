@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import CommentBox from '../CommentBox';
+import NameBox from '../NameBox';
 import WelcomeHeader from '../WelcomeHeader';
 
 class HomePage extends React.Component {
@@ -7,7 +7,7 @@ class HomePage extends React.Component {
     return (
       <div>
         <WelcomeHeader preferredName={this.props.preferredName} />
-        <CommentBox />
+        <NameBox name={this.props.preferredName} />
       </div>
     );
   }
