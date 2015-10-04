@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    title Reaction example
+    script type="text/javascript" src="js/ComponentRenderer.js"
+
+  body
+    #container
+      == content
+    script#init type="text/json" == init.to_json
+    javascript:
+      var init = JSON.parse(document.getElementById('init').textContent);
+      ComponentRenderer.renderInto(document.getElementById('container'), init.component, init.state);
