@@ -3,3 +3,6 @@ source "https://rubygems.org"
 gem "therubyracer"
 gem "sinatra"
 gem "slim"
+
+gem "foreman", "~> 0.77"
+gem "puma", "~> 2.11"
