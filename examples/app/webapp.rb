@@ -10,7 +10,7 @@ module Reaction
     configure do
       js_file = File.join(__dir__, '../public/js/ComponentRenderer.js')
       v8 = V8::Context.new
-      v8['console'] = JSLogger.new if development?
+      v8['console'] = JSLogger.new
       v8.load(js_file)
       set :component_renderer, v8.eval('ComponentRenderer')
     end
