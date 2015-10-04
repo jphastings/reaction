@@ -23,7 +23,7 @@ module Reaction
     end
 
     get '/' do
-      react :HomePage, preferredName: 'JP'
+      react :HomePage, preferredName: params['name']
     end
   end
 end
