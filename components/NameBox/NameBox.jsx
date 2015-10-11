@@ -14,8 +14,10 @@ class NameBox extends React.Component {
     const message = name ? <p>Hi {name}, how splendid!</p> : '';
     return (
       <div>
-        <input type="text" value={name} onChange={this._handleNameChange} placeholder="e.g. Bob" />
-        {message}
+        <form method="post" action="" onSubmit={this._handleNameChange}>
+          <input type="text" name="name" defaultValue={name} placeholder="e.g. Bob" />
+          <input type="submit" value="Change name" />
+        </form>
         <p>I haven't yet implemented <a href="https://facebook.github.io/flux/docs/overview.html#structure-and-data-flow">Flux</a> or an equivalent, so changing your name in this NameBox won't propagate that change to other components.</p>
         <p>The idea is that a client-side only 'dispatcher' collects state change events, alters the state and then selectively re-renders using <code>renderInto</code>. This logic would be duplicated by the fallback no-JS ruby endpoints this client-side JS overrides, so it must be kept simple.</p>
       </div>
@@ -25,11 +27,22 @@ class NameBox extends React.Component {
   // Handlers
 
   _handleNameChange(event) {
-    this.setState({ name: event.target.value});
-    // TODO: send a state change message to the event dispatcher, which will update state for all components.
+    event.preventDefault();
+    // this.setState({ name: event.target.value });
+    const e = new CustomEvent(
+      'rerender', {
+        detail: {
+          action: 'nameChange',
+          name: event.target.name.value
+        }
+      }
+    );
+    window.dispatchEvent(e);
   }
 }
 
-NameBox.propTypes = { name: React.PropTypes.string };
+NameBox.propTypes = {
+  name: React.PropTypes.string
+};
 
 export default NameBox;

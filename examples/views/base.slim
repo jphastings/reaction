@@ -7,7 +7,7 @@ html
   body
     #container
       == content
-    script#init type="text/json" == init.to_json
+    script#state type="text/json" == state.to_json
     javascript:
-      var init = JSON.parse(document.getElementById('init').textContent);
-      ComponentRenderer.renderInto(document.getElementById('container'), init.component, init.state);
+      var state = JSON.parse(document.getElementById('state').textContent);
+      ComponentRenderer.attachToElement(document.getElementById('container'), state);

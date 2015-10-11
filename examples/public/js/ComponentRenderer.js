@@ -76,23 +76,42 @@ var ComponentRenderer =
 	
 	  _createClass(ComponentRenderer, [{
 	    key: 'render',
-	    value: function render(componentName) {
-	      var state = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	
-	      return _react2['default'].renderToString(this._componentFor(componentName, state));
+	    value: function render(state) {
+	      return _react2['default'].renderToString(this._componentFor(state));
 	    }
 	  }, {
-	    key: 'renderInto',
-	    value: function renderInto(element, componentName) {
-	      var state = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-	
-	      _react2['default'].render(this._componentFor(componentName, state), element);
+	    key: 'attachToElement',
+	    value: function attachToElement(element, state) {
+	      this.stateStore = state;
+	      this.reactElement = element;
+	      window.addEventListener('rerender', this._handleEvent.bind(this));
+	      this._renderInto(this.reactElement, this.stateStore);
+	    }
+	  }, {
+	    key: '_renderInto',
+	    value: function _renderInto(element, state) {
+	      _react2['default'].render(this._componentFor(state), element, function () {
+	        console.log("Render complete", state);
+	      });
 	    }
 	  }, {
 	    key: '_componentFor',
-	    value: function _componentFor(componentName, state) {
-	      var componentFactory = _react2['default'].createFactory(_componentsLoaderEs62['default'][componentName]);
+	    value: function _componentFor(state) {
+	      var componentFactory = _react2['default'].createFactory(_componentsLoaderEs62['default'][state.component.name]);
 	      return componentFactory(state);
+	    }
+	  }, {
+	    key: '_handleEvent',
+	    value: function _handleEvent(event) {
+	      var d = event.detail;
+	      switch (d.action) {
+	        case 'nameChange':
+	          this.stateStore.user.preferredName = d.name;
+	          break;
+	        default:
+	          console.error('Event not implemented: ' + event.details.action);
+	      }
+	      this._renderInto(this.reactElement, this.stateStore);
 	    }
 	  }]);
 	
@@ -20830,8 +20849,8 @@ var ComponentRenderer =
 	      return _react2['default'].createElement(
 	        'div',
 	        null,
-	        _react2['default'].createElement(_WelcomeHeader2['default'], { preferredName: this.props.preferredName }),
-	        _react2['default'].createElement(_NameBox2['default'], { name: this.props.preferredName })
+	        _react2['default'].createElement(_WelcomeHeader2['default'], { name: this.props.user.preferredName }),
+	        _react2['default'].createElement(_NameBox2['default'], { name: this.props.user.preferredName })
 	      );
 	    }
 	  }]);
@@ -20840,7 +20859,9 @@ var ComponentRenderer =
 	})(_react2['default'].Component);
 	
 	HomePage.propTypes = {
-	  preferredName: _react.PropTypes.string.isRequired
+	  user: _react.PropTypes.shape({
+	    preferredName: _react.PropTypes.string.isRequired
+	  })
 	};
 	
 	exports['default'] = HomePage;
@@ -20897,8 +20918,12 @@ var ComponentRenderer =
 	      return _react2['default'].createElement(
 	        'div',
 	        null,
-	        _react2['default'].createElement('input', { type: 'text', value: name, onChange: this._handleNameChange, placeholder: 'e.g. Bob' }),
-	        message,
+	        _react2['default'].createElement(
+	          'form',
+	          { method: 'post', action: '', onSubmit: this._handleNameChange },
+	          _react2['default'].createElement('input', { type: 'text', name: 'name', defaultValue: name, placeholder: 'e.g. Bob' }),
+	          _react2['default'].createElement('input', { type: 'submit', value: 'Change name' })
+	        ),
 	        _react2['default'].createElement(
 	          'p',
 	          null,
@@ -20929,15 +20954,24 @@ var ComponentRenderer =
 	  }, {
 	    key: '_handleNameChange',
 	    value: function _handleNameChange(event) {
-	      this.setState({ name: event.target.value });
-	      // TODO: send a state change message to the event dispatcher, which will update state for all components.
+	      event.preventDefault();
+	      // this.setState({ name: event.target.value });
+	      var e = new CustomEvent('rerender', {
+	        detail: {
+	          action: 'nameChange',
+	          name: event.target.name.value
+	        }
+	      });
+	      window.dispatchEvent(e);
 	    }
 	  }]);
 	
 	  return NameBox;
 	})(_react2['default'].Component);
 	
-	NameBox.propTypes = { name: _react2['default'].PropTypes.string };
+	NameBox.propTypes = {
+	  name: _react2['default'].PropTypes.string
+	};
 	
 	exports['default'] = NameBox;
 	module.exports = exports['default'];
@@ -20973,7 +21007,7 @@ var ComponentRenderer =
 	    _classCallCheck(this, WelcomeHeader);
 	
 	    _get(Object.getPrototypeOf(WelcomeHeader.prototype), 'constructor', this).call(this, props);
-	    this.state = { name: this.props.preferredName };
+	    this.state = { name: this.props.name };
 	  }
 	
 	  _createClass(WelcomeHeader, [{

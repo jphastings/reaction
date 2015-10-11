@@ -6,15 +6,17 @@ class HomePage extends React.Component {
   render() {
     return (
       <div>
-        <WelcomeHeader preferredName={this.props.preferredName} />
-        <NameBox name={this.props.preferredName} />
+        <WelcomeHeader name={this.props.user.preferredName} />
+        <NameBox name={this.props.user.preferredName} />
       </div>
     );
   }
 }
 
 HomePage.propTypes = {
-  preferredName: PropTypes.string.isRequired
+  user: PropTypes.shape({
+    preferredName: PropTypes.string.isRequired
+  })
 }
 
 export default HomePage;

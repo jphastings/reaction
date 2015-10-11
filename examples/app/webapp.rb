@@ -17,13 +17,15 @@ module Reaction
 
     helpers do
       def react(component_name, state = {})
-        component = settings.component_renderer.render(component_name, state)
-        slim :base, locals: { content: component, init: { component: component_name, state: state } }
+        (state[:component] ||= {})[:name] = component_name
+        puts state.to_json
+        component = settings.component_renderer.render(state)
+        slim :base, locals: { content: component, state: state }
       end
     end
 
     get '/' do
-      react :HomePage, preferredName: params['name']
+      react :HomePage, user: { preferredName: params['name'] }
     end
   end
 end

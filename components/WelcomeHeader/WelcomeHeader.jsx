@@ -3,7 +3,7 @@ import React from 'react';
 class WelcomeHeader extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: this.props.preferredName };
+    this.state = { name: this.props.name };
   }
 
   render() {

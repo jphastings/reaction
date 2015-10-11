@@ -3,7 +3,7 @@ module.exports = {
   devtool: 'source-map',
   debug: true,
   output: {
-    filename: 'dist/ComponentRenderer.js',
+    filename: 'examples/public/js/ComponentRenderer.js',
     libraryTarget: 'var',
     library: 'ComponentRenderer'
   },
