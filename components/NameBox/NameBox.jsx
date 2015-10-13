@@ -30,6 +30,10 @@ class NameBox extends React.Component {
     );
   }
 
+  componentWillReceiveProps(props) {
+    this.setState(props);
+  }
+
   // Handlers
 
   _handleFieldChange(event) {

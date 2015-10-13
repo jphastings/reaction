@@ -6,8 +6,7 @@ html
     link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" media="screen"
 
   body
-    #container
-      == content
+    #container == content
     script#init-state type="text/json" == state.to_json
     javascript:
       var initState = JSON.parse(document.getElementById('init-state').textContent);
