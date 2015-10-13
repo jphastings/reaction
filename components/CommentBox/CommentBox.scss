@@ -1,8 +1,8 @@
 .big-red {
   font-size: 40px;
   color: red;
-}
 
-.big-red:hover {
-  color: blue;
+  &:hover {
+    color: blue;
+  }
 }
