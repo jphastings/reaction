@@ -40,8 +40,9 @@ class NameBox extends React.Component {
     const partial = event.target.value;
     this.setState({ name: partial });
 
-    fetch('/api/suggestions/names?partial=' + partial)
-      .then(res => res.json())
+    fetch('/api/suggestions/names?partial=' + partial, {
+      credentials: 'same-origin'
+    }).then(res => res.json())
       .then(json => {
         this.setState({ suggestions: json });
       });

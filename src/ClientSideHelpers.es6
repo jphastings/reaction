@@ -11,6 +11,7 @@ const ClientSideHelpers = {
     const data = new FormData(form);
     fetch(form.action, {
       method: form.method,
+      credentials: 'same-origin',
       body: data,
       headers: {
         'Accept': 'application/json'

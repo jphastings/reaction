@@ -10,17 +10,18 @@ module Reaction
   class WebApp < Sinatra::Base
     use Rack::Accept
 
+
     set :root, File.join(__dir__, '..')
 
     configure do
+      enable :sessions
+
       js_file = File.join(__dir__, '../public/js/ComponentRenderer.js')
       v8 = V8::Context.new
       v8['console'] = JSLogger.new
       v8.load(js_file)
       set :component_renderer, v8.eval('ComponentRenderer')
       set :names, File.read(File.join(__dir__, '../ext/names.txt')).split("\n")
-
-      set :stored_name, nil
     end
 
     helpers do
@@ -42,13 +43,13 @@ module Reaction
     end
 
     get '/' do
-      react :HomePage, user: { preferredName: settings.stored_name }
+      react :HomePage, user: { preferredName: session[:name] }
     end
 
     # controller calls
 
     post '/name' do
-      settings.stored_name = params[:name]
+      session[:name] = params[:name]
       destination = URI.parse(request.referer)
 
       redirect destination.path
