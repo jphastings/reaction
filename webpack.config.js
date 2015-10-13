@@ -1,5 +1,7 @@
+var webpack = require('webpack');
+
 module.exports = {
-  entry: './ComponentRenderer.es6',
+  entry: './src/ComponentRenderer.es6',
   devtool: 'source-map',
   debug: true,
   output: {
@@ -7,6 +9,11 @@ module.exports = {
     libraryTarget: 'var',
     library: 'ComponentRenderer'
   },
+  plugins: [
+    // new webpack.ProvidePlugin({
+    //   'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+    // })
+  ],
   module: {
     loaders: [
       {

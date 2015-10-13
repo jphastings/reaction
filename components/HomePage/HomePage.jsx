@@ -5,7 +5,7 @@ import WelcomeHeader from '../WelcomeHeader';
 class HomePage extends React.Component {
   render() {
     return (
-      <div>
+      <div className="container">
         <WelcomeHeader name={this.props.user.preferredName} />
         <NameBox name={this.props.user.preferredName} />
       </div>
@@ -15,7 +15,7 @@ class HomePage extends React.Component {
 
 HomePage.propTypes = {
   user: PropTypes.shape({
-    preferredName: PropTypes.string.isRequired
+    preferredName: PropTypes.string
   })
 }
 

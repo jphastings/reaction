@@ -1,13 +1,20 @@
 require 'sinatra/base'
 require 'therubyracer'
+require 'rack/accept'
 require 'js_logger'
 require 'json'
+require 'slim'
+
+NAME = nil
 
 module Reaction
   class WebApp < Sinatra::Base
+    use Rack::Accept
+
     set :root, File.join(__dir__, '..')
 
     configure do
+      enable :sessions
       js_file = File.join(__dir__, '../public/js/ComponentRenderer.js')
       v8 = V8::Context.new
       v8['console'] = JSLogger.new
@@ -18,14 +25,46 @@ module Reaction
     helpers do
       def react(component_name, state = {})
         (state[:component] ||= {})[:name] = component_name
-        puts state.to_json
-        component = settings.component_renderer.render(state)
-        slim :base, locals: { content: component, state: state }
+        rendered_content = settings.component_renderer.render(state)
+        slim :base, locals: { content: rendered_content, state: state }
+      end
+
+      def accept
+        env['rack-accept.request']
       end
     end
 
     get '/' do
-      react :HomePage, user: { preferredName: params['name'] }
+      react :HomePage, user: { preferredName: NAME }
+    end
+
+    # controller calls
+
+    post '/name' do
+      NAME = params[:name]
+      destination = URI.parse(request.referer)
+
+      if accept.media_type?('text/html')
+        redirect destination.path
+      elsif accept.media_type?('application/json')
+        content_type :json
+        {
+          user: { preferredName: NAME },
+          component: { name: :HomePage }
+        }.to_json
+      end
+    end
+
+    # Stateless API calls
+
+    get '/api/suggestions/names', provides: :json do
+      count = 5
+      string = params[:partial].scan(/^[a-z]+/i).first rescue nil
+      suggestions = string.nil? ?
+        [] :
+        `grep '^#{string}' /usr/share/dict/propernames | head -n#{count}`.split("\n")
+
+      suggestions.to_json
     end
   end
 end

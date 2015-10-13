@@ -1,8 +1,9 @@
 source "https://rubygems.org"
+ruby "2.2.3"
 
 gem "therubyracer"
+gem "rack-accept"
 gem "sinatra"
 gem "slim"
 
 gem "foreman", "~> 0.77"
-gem "puma", "~> 2.11"
