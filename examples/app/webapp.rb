@@ -5,8 +5,6 @@ require 'js_logger'
 require 'json'
 require 'slim'
 
-NAME = nil
-
 module Reaction
   class WebApp < Sinatra::Base
     use Rack::Accept
@@ -20,6 +18,9 @@ module Reaction
       v8['console'] = JSLogger.new
       v8.load(js_file)
       set :component_renderer, v8.eval('ComponentRenderer')
+      set :names, File.read(File.join(__dir__, '../ext/names.txt')).split("\n")
+
+      set :stored_name, nil
     end
 
     helpers do
@@ -35,13 +36,13 @@ module Reaction
     end
 
     get '/' do
-      react :HomePage, user: { preferredName: NAME }
+      react :HomePage, user: { preferredName: settings.stored_name }
     end
 
     # controller calls
 
     post '/name' do
-      NAME = params[:name]
+      settings.stored_name = params[:name]
       destination = URI.parse(request.referer)
 
       if accept.media_type?('text/html')
@@ -49,7 +50,7 @@ module Reaction
       elsif accept.media_type?('application/json')
         content_type :json
         {
-          user: { preferredName: NAME },
+          user: { preferredName: settings.stored_name },
           component: { name: :HomePage }
         }.to_json
       end
@@ -62,7 +63,7 @@ module Reaction
       string = params[:partial].scan(/^[a-z]+/i).first rescue nil
       suggestions = string.nil? ?
         [] :
-        `grep '^#{string}' /usr/share/dict/propernames | head -n#{count}`.split("\n")
+        settings.names.lazy.select { |name| name.match(/^#{string}/i) }.take(5).to_a
 
       suggestions.to_json
     end

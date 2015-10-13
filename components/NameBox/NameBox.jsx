@@ -49,7 +49,7 @@ class NameBox extends React.Component {
 
   _handleChooseSelection(event) {
     event.preventDefault();
-    this.setState({ name: event.target.text }, () => {
+    this.setState({ name: event.target.text, suggestions: [] }, () => {
       ClientSideHelpers.handleFormSubmitClientSide(this.refs.form, false);
     });
   }
