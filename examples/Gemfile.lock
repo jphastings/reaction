@@ -4,6 +4,7 @@ GEM
     foreman (0.78.0)
       thor (~> 0.19.1)
     libv8 (3.16.14.11)
+    puma (2.14.0)
     rack (1.6.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -29,6 +30,7 @@ PLATFORMS
 
 DEPENDENCIES
   foreman (~> 0.77)
+  puma
   rack-accept
   sinatra
   slim
