@@ -13,7 +13,6 @@ module Reaction
     set :root, File.join(__dir__, '..')
 
     configure do
-      enable :sessions
       js_file = File.join(__dir__, '../public/js/ComponentRenderer.js')
       v8 = V8::Context.new
       v8['console'] = JSLogger.new
