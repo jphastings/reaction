@@ -19,15 +19,16 @@ class ComponentRenderer {
   }
 
   rerender(state) {
-    console.log(this.containerNode, state.user.preferredName)
+    // TODO: This should not be needed! Why is reactDOM not picking up the change?
+    this.containerNode.innerHTML = '';
     ReactDOM.render(this._componentFor(state), this.containerNode, () => {
       console.log("Render complete", state.user.preferredName)
     });
   }
 
   _componentFor(state) {
-    const component = this.components[state.component.name];
-    const factory = React.createFactory(component);
+    const Component = this.components[state.component.name];
+    const factory = React.createFactory(Component);
     console.log(factory(state))
     return factory(state);
   }
