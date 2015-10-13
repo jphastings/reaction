@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'therubyracer'
 require 'rack/accept'
 require 'js_logger'
+require 'stringio'
 require 'json'
 require 'slim'
 
@@ -24,14 +25,20 @@ module Reaction
     end
 
     helpers do
-      def react(component_name, state = {})
-        (state[:component] ||= {})[:name] = component_name
-        rendered_content = settings.component_renderer.render(state)
-        slim :base, locals: { content: rendered_content, state: state }
-      end
-
       def accept
         env['rack-accept.request']
+      end
+
+      def react(component_name, state = {})
+        (state[:component] ||= {})[:name] = component_name
+
+        if accept.media_type?('text/html')
+          rendered_content = settings.component_renderer.render(state)
+          slim :base, locals: { content: rendered_content, state: state }
+        elsif accept.media_type?('application/json')
+          content_type :json
+          state.to_json
+        end
       end
     end
 
@@ -45,15 +52,7 @@ module Reaction
       settings.stored_name = params[:name]
       destination = URI.parse(request.referer)
 
-      if accept.media_type?('text/html')
-        redirect destination.path
-      elsif accept.media_type?('application/json')
-        content_type :json
-        {
-          user: { preferredName: settings.stored_name },
-          component: { name: :HomePage }
-        }.to_json
-      end
+      redirect destination.path
     end
 
     # Stateless API calls
