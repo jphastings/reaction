@@ -46,6 +46,10 @@ module Reaction
       react :HomePage, user: { preferredName: session[:name] }
     end
 
+    get '/styles' do
+      react :CommentBox
+    end
+
     # controller calls
 
     post '/name' do
