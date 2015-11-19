@@ -30,7 +30,7 @@ module Reaction
       end
 
       def react(component_name, state = {})
-        (state[:component] ||= {})[:name] = component_name
+        (state[:react] ||= {})[:component] = component_name
 
         if accept.media_type?('text/html')
           rendered_content = settings.component_renderer.render(state)
