@@ -17,7 +17,7 @@ const ClientSideHelpers = {
         'Accept': 'application/json'
       }
     }).then(res => res.json())
-      .then(data => ComponentRenderer.rerender(data));
+      .then(data => ComponentRenderer.updateStateAndRerender(data));
   }
 }
 
